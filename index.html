@@ -88,7 +88,7 @@
     <label>Lead Collected By:</label>
     <select name="collectedBy" required>
       <option value="">Select</option>
-      <option value="JeevanS">Jeevan</option>
+      <option value="Jeevan S">Jeevan Sunny</option>
       <option value="Sanjeev">Sanjeev</option>
       <option value="Vineetha M">Vineetha M</option>
       <option value="Other">Other</option> <!-- Added here -->
@@ -107,7 +107,7 @@
       const data = {};
       formData.forEach((value, key) => data[key] = value);
 
-      fetch('https://script.google.com/macros/s/AKfycbz2VNdRxR3v3fDtS2S3uPpuQDkkbEUcdG_X4pZSQc2Y07TfnctP4mPRthDe2i9GmMDc8A/exec', {
+      fetch('https://script.google.com/macros/s/AKfycbwbu245jiLYL-39V1wMdcAi1XPpvo0QfJLUXzuUZEDhFQKhDua7MvrRH9iSGr-TC1ITdA/exec', {
         method: 'POST',
         body: JSON.stringify(data),
       })
