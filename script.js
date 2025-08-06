@@ -11,7 +11,7 @@ document.getElementById("leadForm").addEventListener("submit", function(e) {
     collectedBy: form.collectedBy.value
   };
 
-  fetch("https://script.google.com/macros/s/AKfycbwGKIZrEjlBL717FeHGdgx9PUCstXH-6gRswfYtYzJQbwOM_XepGmjalSS8dY8W8XKY/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbw6YdRqwq0tMGEaC2s6pk4KPuZvRLPjvfou2kP9nDguK8QL561hyS6GZqhsUaDdoobC7w/exec", {
     method: "POST",
     body: JSON.stringify(formData),
     headers: {
