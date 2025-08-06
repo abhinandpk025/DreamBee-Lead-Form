@@ -2,37 +2,97 @@
 <html>
 <head>
   <title>Lead Collection Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      padding: 30px;
+      max-width: 500px;
+      margin: auto;
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: #27ae60;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #219150;
+    }
+
+    #responseMsg {
+      text-align: center;
+      margin-top: 20px;
+      color: #2d3436;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <h2>Student Lead Collection</h2>
   <form id="leadForm">
-    <label>Student Name:</label><br>
-    <input type="text" name="studentName" required><br><br>
+    <label>Student Name:</label>
+    <input type="text" name="studentName" required>
 
-    <label>Parent Name:</label><br>
-    <input type="text" name="parentName" required><br><br>
+    <label>Parent Name:</label>
+    <input type="text" name="parentName" required>
 
-    <label>Mobile Number:</label><br>
-    <input type="tel" name="mobileNumber" pattern="[0-9]{10}" required><br><br>
+    <label>Mobile Number:</label>
+    <input type="tel" name="mobileNumber" pattern="[0-9]{10}" required>
 
-    <label>Department:</label><br>
+    <label>Department:</label>
     <select name="department" required>
       <option value="">Select</option>
       <option value="Mech">Mech</option>
       <option value="Civil">Civil</option>
       <option value="EEE">EEE</option>
-    </select><br><br>
+    </select>
 
-    <label>Lead Remarks:</label><br>
-    <input type="text" name="leadRemarks"><br><br>
+    <label>Lead Remarks:</label>
+    <input type="text" name="leadRemarks">
 
-    <label>Lead Collected By:</label><br>
+    <label>Lead Collected By:</label>
     <select name="collectedBy" required>
       <option value="">Select</option>
       <option value="Jeevan">Jeevan</option>
       <option value="Sanjeev">Sanjeev</option>
       <option value="Vinitha">Vinitha</option>
-    </select><br><br>
+      <option value="Other">Other</option> <!-- Added here -->
+    </select>
 
     <button type="submit">Submit</button>
   </form>
@@ -47,7 +107,7 @@
       const data = {};
       formData.forEach((value, key) => data[key] = value);
 
-      fetch('https://script.google.com/macros/s/AKfycbz2VNdRxR3v3fDtS2S3uPpuQDkkbEUcdG_X4pZSQc2Y07TfnctP4mPRthDe2i9GmMDc8A/exec', {
+      fetch('YOUR_WEB_APP_URL_HERE', {
         method: 'POST',
         body: JSON.stringify(data),
       })
