@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lead Collection Form</title>
+</head>
+<body>
+  <h2>Student Lead Collection</h2>
+  <form id="leadForm">
+    <label>Student Name:</label><br>
+    <input type="text" name="studentName" required><br><br>
+
+    <label>Parent Name:</label><br>
+    <input type="text" name="parentName" required><br><br>
+
+    <label>Mobile Number:</label><br>
+    <input type="tel" name="mobileNumber" pattern="[0-9]{10}" required><br><br>
+
+    <label>Department:</label><br>
+    <select name="department" required>
+      <option value="">Select</option>
+      <option value="Mech">Mech</option>
+      <option value="Civil">Civil</option>
+      <option value="EEE">EEE</option>
+    </select><br><br>
+
+    <label>Lead Remarks:</label><br>
+    <input type="text" name="leadRemarks"><br><br>
+
+    <label>Lead Collected By:</label><br>
+    <select name="collectedBy" required>
+      <option value="">Select</option>
+      <option value="Jeevan">Jeevan</option>
+      <option value="Sanjeev">Sanjeev</option>
+      <option value="Vinitha">Vinitha</option>
+    </select><br><br>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <p id="responseMsg"></p>
+
+  <script>
+    document.getElementById('leadForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const data = {};
+      formData.forEach((value, key) => data[key] = value);
+
+      fetch('https://script.google.com/macros/s/AKfycbz2VNdRxR3v3fDtS2S3uPpuQDkkbEUcdG_X4pZSQc2Y07TfnctP4mPRthDe2i9GmMDc8A/exec', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      })
+      .then(res => res.text())
+      .then(msg => {
+        document.getElementById('responseMsg').innerText = msg;
+        document.getElementById('leadForm').reset();
+      });
+    });
+  </script>
+</body>
+</html>
