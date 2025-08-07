@@ -1,95 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Lead Collection Form</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f6f8;
-      padding: 30px;
-      max-width: 500px;
-      margin: auto;
-    }
-
-    h2 {
-      text-align: center;
-      color: #2c3e50;
-    }
-
-    form {
-      background-color: #fff;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    }
-
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-
-    button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 12px;
-      background-color: #3498db;
-      color: white;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #2980b9;  /* darker blue on hover */
-    }
-
-    #responseMsg {
-      text-align: center;
-      margin-top: 20px;
-      color: #2d3436;
-      font-weight: bold;
-    }
-  </style>
+  <title>Customer Booking Form</title>
+  <meta charset="UTF-8" />
 </head>
 <body>
-  <h2>Student Lead Generation</h2>
-  <form id="leadForm">
-    <label>Student Name:</label>
-    <input type="text" name="studentName" required>
+  <h2>Customer Booking Form</h2>
 
-    <label>Parent Name:</label>
-    <input type="text" name="parentName" required>
+  <form id="bookingForm">
+    <label>Student Name: <input name="studentName" required></label><br><br>
+    <label>Parent Name: <input name="parentName" required></label><br><br>
+    <label>Mobile Number: <input name="mobNumber" pattern="[0-9]{10}" required></label><br><br>
 
-    <label>Mobile Number:</label>
-    <input type="tel" name="mobileNumber" pattern="[0-9]{10}" required>
+    <label>Department:
+      <select name="department" required>
+        <option value="">Select</option>
+        <option>Mech</option>
+        <option>Civil</option>
+        <option>EEE</option>
+        <option>ECE</option>
+        <option>IC</option>
+        <option>CS</option>
+      </select>
+    </label><br><br>
 
-    <label>Department:</label>
-    <select name="department" required>
-      <option value="">Select</option>
-      <option value="Mech">Mech</option>
-      <option value="Civil">Civil</option>
-      <option value="EEE">EEE</option>
-      <option value="ECE">ECE</option>
-      <option value="CS">CS</option>
-      <option value="IC">IC</option>
-    </select>
+    <label>Receipt No: <input type="number" name="receiptNo" required></label><br><br>
 
-    <label>Confidence / Remarks:</label>
-    <input type="text" name="leadRemarks">
+    <label>Package Opted:
+      <select id="packageDropdown" name="packageOpted" required>
+        <option value="">Loading...</option>
+      </select>
+    </label><br><br>
 
-    <label>Lead Collected By:</label>
-    <input type="text" name="collectedBy">
+    <label>Package Rate: <input type="number" name="packageRate" id="packageRate" readonly></label><br><br>
+
+    <label>Advance Paid: <input type="number" name="advancePaid" required></label><br><br>
+
+    <label>Mode of Payment:
+      <select name="paymentMode" required>
+        <option value="">Select</option>
+        <option>UPI</option>
+        <option>Cash</option>
+      </select>
+    </label><br><br>
+
+    <label>Order Taken By: <input name="orderTakenBy" required></label><br><br>
+
+    <label>Probable Date of Arrival: 
+      <input type="date" name="arrivalDate" required>
+    </label><br><br>
 
     <button type="submit">Submit</button>
   </form>
@@ -97,21 +56,48 @@
   <p id="responseMsg"></p>
 
   <script>
-    document.getElementById('leadForm').addEventListener('submit', function(e) {
-      e.preventDefault();
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxfThMyAht1eTNmaPfFsje55Ne5ULsQx6GrdbhYwIrOHjUnU_TNQFK2w6VVsrVyDUeH/exec'; // 👈 replace with your actual Web App URL
 
+    // Fetch dropdown values
+    fetch(scriptURL)
+      .then(res => res.json())
+      .then(data => {
+        const dropdown = document.getElementById('packageDropdown');
+        dropdown.innerHTML = '<option value="">Select</option>';
+        data.forEach(item => {
+          const option = document.createElement('option');
+          option.value = item.name;
+          option.textContent = item.name;
+          option.setAttribute('data-price', item.price);
+          dropdown.appendChild(option);
+        });
+      });
+
+    // Autofill price
+    document.getElementById('packageDropdown').addEventListener('change', function () {
+      const selected = this.options[this.selectedIndex];
+      document.getElementById('packageRate').value = selected.getAttribute('data-price') || '';
+    });
+
+    // Submit form
+    document.getElementById('bookingForm').addEventListener('submit', function (e) {
+      e.preventDefault();
       const formData = new FormData(this);
       const data = {};
-      formData.forEach((value, key) => data[key] = value);
+      formData.forEach((v, k) => data[k] = v);
 
-      fetch('https://script.google.com/macros/s/AKfycbzXMq0MnLFwrhJ2YXSmizCuAnBKkgMkawm-W19JKEujak5ohGUhl6cK2C2CdQixWJX6/exec', {
+      fetch(scriptURL, {
         method: 'POST',
-        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
       })
-      .then(res => res.text())
-      .then(msg => {
-        document.getElementById('responseMsg').innerText = msg;
-        document.getElementById('leadForm').reset();
+      .then(res => res.json())
+      .then(res => {
+        document.getElementById('responseMsg').textContent = res.success ? '✅ Submitted successfully!' : '❌ Failed: ' + res.error;
+        if (res.success) this.reset();
+      })
+      .catch(err => {
+        document.getElementById('responseMsg').textContent = '❌ Error: ' + err.message;
       });
     });
   </script>
